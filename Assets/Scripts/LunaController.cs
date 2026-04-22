@@ -61,4 +61,9 @@ public class LunaController : MonoBehaviour
         currentHealth=Mathf.Clamp(currentHealth+amount,0,maxHealth);
         Debug.Log(currentHealth+""+maxHealth);
     }
+
+    public void Climb(bool start)
+    {
+        animator.SetBool("Climb",start);
+    }
 }
