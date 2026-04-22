@@ -16,7 +16,7 @@ public class LunaController : MonoBehaviour
     {
         rigidbody2D=GetComponent<Rigidbody2D>();
         maxHealth=5;
-        currentHealth=maxHealth;
+        currentHealth=4;
         animator=GetComponentInChildren<Animator>();
     }
 
