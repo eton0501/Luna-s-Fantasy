@@ -13,7 +13,7 @@ public class UIManger : MonoBehaviour
     {
         Instance=this;
         originalSize=hpMaskImage.rectTransform.rect.width;
-        SetHPValue(0.5f);
+        SetHPValue(1);
     }
     public void SetHPValue(float fillPercent)
     {
