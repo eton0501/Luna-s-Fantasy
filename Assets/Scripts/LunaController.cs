@@ -4,10 +4,7 @@ public class LunaController : MonoBehaviour
 {
     private Rigidbody2D rigidbody2D;
     public float moveSpeed;
-    private int maxHealth;
-    public int MaxHealth{get{return maxHealth;}}
-    private int currentHealth;
-    public int Health{get{return currentHealth;}}
+    
     private Animator animator;
     private Vector2 lookDirection=new Vector2(1,0);
     private float moveScale;
@@ -15,8 +12,7 @@ public class LunaController : MonoBehaviour
     void Start()
     {
         rigidbody2D=GetComponent<Rigidbody2D>();
-        maxHealth=5;
-        currentHealth=4;
+        
         animator=GetComponentInChildren<Animator>();
     }
 
@@ -56,11 +52,7 @@ public class LunaController : MonoBehaviour
         position=position+moveSpeed*move*Time.fixedDeltaTime;
         rigidbody2D.MovePosition(position);
     }
-    public void ChangeHealth(int amount)
-    {
-        currentHealth=Mathf.Clamp(currentHealth+amount,0,maxHealth);
-        Debug.Log(currentHealth+""+maxHealth);
-    }
+    
 
     public void Climb(bool start)
     {
