@@ -8,6 +8,7 @@ public class UIManger : MonoBehaviour
     public Image hpMaskImage;
     public Image mpMaskImage;
     private float originalSize;
+    public GameObject battlePanelGo;
 
     void Awake()
     {
@@ -22,5 +23,10 @@ public class UIManger : MonoBehaviour
     public void SetMPValue(float fillPercent)
     {
         mpMaskImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,fillPercent*originalSize);
+    }
+
+    public void ShowOrHideBattlePanel(bool show)
+    {
+        battlePanelGo.SetActive(show);
     }
 }
