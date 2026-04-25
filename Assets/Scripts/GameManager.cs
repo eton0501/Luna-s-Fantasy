@@ -4,25 +4,58 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private int maxHealth;
-    public int MaxHealth{get{return maxHealth;}}
-    private int currentHealth;
-    public int Health{get{return currentHealth;}}
+    public int lunaHP;
+    public int lunaCurrentHP;
+    public int lunaMP;
+    public int lunaCurrentMP;
+    public int monsterCurrentHP;
     public GameObject battleGo;
     private void Awake()
     {
         Instance=this;
-        maxHealth=5;
-        currentHealth=4;
-    }
-    public void ChangeHealth(int amount)
-    {
-        currentHealth=Mathf.Clamp(currentHealth+amount,0,maxHealth);
-        Debug.Log(currentHealth+""+maxHealth);
+        lunaHP=lunaCurrentHP=100;
+        lunaMP=lunaCurrentMP=100;
+        monsterCurrentHP=50;
     }
 
     public void EnterOrExitBattle(bool enter = true)
     {
+        UIManger.Instance.ShowOrHideBattlePanel(enter);
         battleGo.SetActive(enter);
+    }
+    public void AddOrDecreaseHP(int value)
+    {
+        lunaCurrentHP+=value;
+        if (lunaCurrentHP >= lunaHP)
+        {
+            lunaCurrentHP=lunaHP;
+        }
+        if (lunaCurrentHP <= 0)
+        {
+            lunaCurrentHP=0;
+        }
+        UIManger.Instance.SetHPValue((float)lunaCurrentHP/lunaHP);
+    }
+    public void AddOrDecreaseMP(int value)
+    {
+        lunaCurrentMP+=value;
+        if (lunaCurrentMP >= lunaMP)
+        {
+            lunaCurrentMP=lunaMP;
+        }
+        if (lunaCurrentMP <= 0)
+        {
+            lunaCurrentMP=0;
+        }
+        UIManger.Instance.SetMPValue((float)lunaCurrentMP/lunaMP);
+    }
+    public bool CanUsePlayerMP(int value)
+    {
+        return lunaCurrentMP>=value;
+    }
+    public int AddOrDecreaseMonsterHP(int value)
+    {
+        monsterCurrentHP+=value;
+        return monsterCurrentHP;
     }
 }
