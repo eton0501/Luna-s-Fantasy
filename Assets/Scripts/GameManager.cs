@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     public int MaxHealth{get{return maxHealth;}}
     private int currentHealth;
     public int Health{get{return currentHealth;}}
+    public GameObject battleGo;
     private void Awake()
     {
         Instance=this;
@@ -17,5 +19,10 @@ public class GameManager : MonoBehaviour
     {
         currentHealth=Mathf.Clamp(currentHealth+amount,0,maxHealth);
         Debug.Log(currentHealth+""+maxHealth);
+    }
+
+    public void EnterOrExitBattle(bool enter = true)
+    {
+        battleGo.SetActive(enter);
     }
 }
