@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 public class UIManger : MonoBehaviour
@@ -9,6 +10,11 @@ public class UIManger : MonoBehaviour
     public Image mpMaskImage;
     private float originalSize;
     public GameObject battlePanelGo;
+    public GameObject talkPanelGo;
+    public Sprite[] characterSprtes;
+    public Image characterImage;
+    public Text contentText;
+    public Text nameText;
 
     void Awake()
     {
@@ -28,5 +34,30 @@ public class UIManger : MonoBehaviour
     public void ShowOrHideBattlePanel(bool show)
     {
         battlePanelGo.SetActive(show);
+    }
+    public void ShowDialog(string content=null,string name = null)
+    {
+        if (content == null)
+        {
+            talkPanelGo.SetActive(false);
+        }
+        else
+        {
+            talkPanelGo.SetActive(true);
+            if (name != null)
+            {
+                if (name == "Luna")
+                {
+                    characterImage.sprite=characterSprtes[0];
+                }
+                else
+                {
+                    characterImage.sprite=characterSprtes[1];
+                }
+                characterImage.SetNativeSize();
+            }
+            contentText.text=content;
+            nameText.text=name;
+        }
     }
 }

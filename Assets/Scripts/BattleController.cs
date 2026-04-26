@@ -14,16 +14,19 @@ public class BattleController : MonoBehaviour
     public SpriteRenderer lunaSr;
     public GameObject skillEffectGo;
     public GameObject healEffectGo;
+    public AudioClip attackSound;
+    public AudioClip lunaAttackSound;
+    public AudioClip monsterAttackSound;
+    public AudioClip skillSound;
+    public AudioClip recoverSound;
+    public AudioClip hitSound;
+    public AudioClip dieSound;
+    public AudioClip monsterDieSound;
+
     void Awake()
     {
         monsterInitPos=monsterTrans.localPosition;
         lunaInitPos=lunaTrans.localPosition;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void OnEnable()
@@ -75,6 +78,8 @@ public class BattleController : MonoBehaviour
         UIManger.Instance.ShowOrHideBattlePanel(false);
         lunaAnimator.CrossFade("RecoverHP",0);
         GameManager.Instance.AddOrDecreaseMP(-50);
+        GameManager.Instance.PlaySound(lunaAttackSound);
+        GameManager.Instance.PlaySound(recoverSound);
         yield return new WaitForSeconds(0.1f);
         GameObject go=Instantiate(healEffectGo,lunaTrans);
         go.transform.localPosition=Vector3.zero;
@@ -92,6 +97,8 @@ public class BattleController : MonoBehaviour
         (
             () =>
             {
+                GameManager.Instance.PlaySound(attackSound);
+                GameManager.Instance.PlaySound(lunaAttackSound);
                 lunaAnimator.SetBool("MoveState",false);
                 lunaAnimator.SetFloat("MoveValue",0);
                 lunaAnimator.CrossFade("Attack",0);
@@ -123,6 +130,7 @@ public class BattleController : MonoBehaviour
         monsterTrans.DOLocalMove(monsterInitPos, 0.5f).OnComplete(() =>
         {
             UIManger.Instance.ShowOrHideBattlePanel(true);
+            GameManager.Instance.PlaySound(monsterAttackSound);
             lunaAnimator.SetBool("Defend",false);
         });
     }
@@ -134,6 +142,8 @@ public class BattleController : MonoBehaviour
         yield return new WaitForSeconds(0.35f);
         GameObject go=Instantiate(skillEffectGo,monsterTrans);
         go.transform.localPosition=Vector3.zero;
+        GameManager.Instance.PlaySound(lunaAttackSound);
+        GameManager.Instance.PlaySound(skillSound);
         yield return new WaitForSeconds(0.4f);
         monsterSr.DOFade(0.3f, 0.2f).OnComplete(() =>
         {
@@ -150,8 +160,10 @@ public class BattleController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         monsterTrans.DOLocalMove(lunaInitPos, 0.2f).OnComplete(() =>
         {
+            GameManager.Instance.PlaySound(monsterAttackSound);
             monsterTrans.DOLocalMove(lunaInitPos-new Vector3(1.5f,0,0),0.2f);
             lunaAnimator.CrossFade("Hit",0);
+            GameManager.Instance.PlaySound(hitSound);
             lunaSr.DOFade(0.3f,0.2f).OnComplete(()=>{lunaSr.DOFade(1,0.2f);});
             JudgeLunaHP(-20);
         });
@@ -165,9 +177,10 @@ public class BattleController : MonoBehaviour
     {
         if (GameManager.Instance.AddOrDecreaseMonsterHP(value) <= 0)
         {
+            GameManager.Instance.PlaySound(monsterDieSound);
             monsterSr.DOFade(0, 0.4f).OnComplete(() =>
             {
-                GameManager.Instance.EnterOrExitBattle(false);
+                GameManager.Instance.EnterOrExitBattle(false,1);
             });
         }
         else
@@ -180,6 +193,7 @@ public class BattleController : MonoBehaviour
         GameManager.Instance.AddOrDecreaseHP(value);
         if (GameManager.Instance.lunaCurrentHP <= 0)
         {
+            GameManager.Instance.PlaySound(dieSound);
             lunaAnimator.CrossFade("Die",0);
             lunaSr.DOFade(0, 0.8f).OnComplete(() =>
             {
