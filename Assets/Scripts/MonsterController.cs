@@ -26,6 +26,10 @@ public class MonsterController : MonoBehaviour
     
     void Update()
     {
+        if (GameManager.Instance.enterBattle)
+        {
+            return;
+        }
         timer-=Time.deltaTime;
         if (timer < 0)
         {
@@ -36,6 +40,10 @@ public class MonsterController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameManager.Instance.enterBattle)
+        {
+            return;
+        }
         Vector3 pos=rigidbody2D.position;
         if (vertical)
         {
@@ -56,6 +64,7 @@ public class MonsterController : MonoBehaviour
         if (collision.transform.CompareTag("Luna"))
         {
             GameManager.Instance.EnterOrExitBattle();
+            GameManager.Instance.SetMonster(gameObject);
         }
     }
 }
